@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Rotating_FullHeight_FullWidth_CollectionCells.xcodeproj">
+      location = "self:AutoLayoutCollectionView.xcodeproj">
    </FileRef>
 </Workspace>

@@ -1,34 +1,5 @@
 import UIKit
 
-class RedView: UIView {
-    override init(frame: CGRect) { super.init(frame: frame); backgroundColor = .red }
-    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        print("RedView.\(#function) is called with bounds \(bounds)!")
-    }
-}
-
-class BlueView: UIView {
-    override init(frame: CGRect) { super.init(frame: frame); backgroundColor = .blue }
-    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        print("BlueView.\(#function) is called with bounds \(bounds)!")
-    }
-}
-
-extension UIView {
-    func pin(_ inner:UIView, constant: CGFloat) {
-        addSubview(inner)
-        inner.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            inner.leadingAnchor.constraint(equalTo: leadingAnchor, constant: constant),
-            trailingAnchor.constraint(equalTo: inner.trailingAnchor, constant: constant),
-            inner.topAnchor.constraint(equalTo: topAnchor, constant: constant),
-            bottomAnchor.constraint(equalTo: inner.bottomAnchor, constant: constant) ])
-    }
-}
 
 class CollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
@@ -44,18 +15,18 @@ class CollectionCell: UICollectionViewCell {
 
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = .white
-        contentView.pin(red, constant: 0)
+        contentView.pin(red, inset: 0)
     }
 
     lazy var red: UIView = {
         let view = RedView()
-        view.pin(blue, constant: 5)
+        view.pin(blue, inset: 5)
         return view
     }()
 
     lazy var blue: UIView = {
         let view = BlueView()
-        view.pin(label, constant: 0)
+        view.pin(label, inset: 0)
         return view
     }()
 
@@ -136,7 +107,6 @@ class FullHeightCollectionController: UIViewController, UICollectionViewDataSour
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let window = (UIApplication.shared.delegate as! AppDelegate).window
-        window?.rootViewController = FullWidthCollectionViewController()
     }
 
     lazy var collectionView: UICollectionView = {
