@@ -48,7 +48,6 @@ class ExpandingCollectionViewController: CalculatedSizeCollectionViewController 
 
 //        collectionView.reloadItems(at: [indexPath])
         UIView.animate(withDuration: 0.25, animations: {
-
             collectionView.collectionViewLayout.invalidateLayout()
             collectionView.layoutIfNeeded()
         })

@@ -9,9 +9,10 @@
 import UIKit
 
 class App {
-    static let constraintHeightController = ConstraintHeightController()
+    static let constraintHeightController = ExpandingCollectionViewController()
     static let estimatedWidthController = EstimatedWidthCollectionViewController()
     static let expandingCellController = ExpandingCollectionViewController()
+    static let expandingCellControllerThresholdTest = ExpandingCollectionViewControllerTestThreshold()
     static let calcalatedSizeController = CalculatedSizeCollectionViewController()
 
     static func flipTo(controller: UIViewController) {
@@ -130,15 +131,17 @@ class ViewController: UITabBarController {
 
 //        view.pin(RedView(), to: .left, .topMargin, .right, .bottom)
 
-        App.calcalatedSizeController.tabBarItem = UITabBarItem(title: "Calculated", image: nil, tag: 4)
-        App.estimatedWidthController.tabBarItem = UITabBarItem(title: "Estimated", image: nil, tag: 1)
-        App.expandingCellController.tabBarItem = UITabBarItem(title: "Expanding", image: nil, tag: 2)
-        App.constraintHeightController.tabBarItem = UITabBarItem(title: "Height", image: nil, tag: 3)
+        App.calcalatedSizeController.tabBarItem = UITabBarItem(title: "Calculated", image: nil, tag: 1)
+        App.estimatedWidthController.tabBarItem = UITabBarItem(title: "Estimated", image: nil, tag: 2)
+        App.expandingCellController.tabBarItem = UITabBarItem(title: "Expanding", image: nil, tag: 3)
+        App.expandingCellControllerThresholdTest.tabBarItem = UITabBarItem(title: "Threshold", image: nil, tag: 4)
+        App.constraintHeightController.tabBarItem = UITabBarItem(title: "Height", image: nil, tag: 5)
 
         self.viewControllers = [
             App.estimatedWidthController,
             App.calcalatedSizeController,
             App.expandingCellController,
+            App.expandingCellControllerThresholdTest,
             App.constraintHeightController
         ]
     }

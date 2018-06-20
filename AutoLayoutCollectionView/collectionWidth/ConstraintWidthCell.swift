@@ -8,29 +8,6 @@
 
 import UIKit
 
-extension UICollectionView {
-
-    var contentBounds: CGRect {
-        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout
-            else { return bounds.inset(contentInset) }
-        return bounds.inset(contentInset).inset(flowLayout.sectionInset)
-    }
-
-    var contentWidthMaxInBounds: CGFloat { return self.bounds.size.width - horizontalInset }
-    var horizontalInset: CGFloat {
-        let flowInset = (collectionViewLayout as? UICollectionViewFlowLayout)
-            .flatMap { $0.sectionInset.left + $0.sectionInset.right } ?? 0
-        return (contentInset.left + contentInset.right) + flowInset
-    }
-
-    var contentHeightMaxInBounds: CGFloat { return self.bounds.size.height - verticalInset }
-    var verticalInset: CGFloat {
-        let flowInset = (collectionViewLayout as? UICollectionViewFlowLayout)
-            .flatMap { $0.sectionInset.top + $0.sectionInset.bottom } ?? 0
-        return (contentInset.top + contentInset.bottom) + flowInset
-    }
-}
-
 extension UICollectionViewCell {
     var collectionView: UICollectionView? {
         return superview as? UICollectionView

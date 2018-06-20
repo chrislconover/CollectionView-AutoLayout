@@ -16,7 +16,8 @@
 		8326558820C9DEB1007925C4 /* SimpleCalculatedSizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8326558720C9DEB1007925C4 /* SimpleCalculatedSizeCell.swift */; };
 		8326558A20C9DF68007925C4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8326558920C9DF68007925C4 /* Data.swift */; };
 		832A65D5201FA40500A2BB0A /* CollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 832A65D4201FA40500A2BB0A /* CollectionView.xib */; };
-		833FFA9E20D1EB4400F5CEAD /* ExpandingCollctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FFA9D20D1EB4400F5CEAD /* ExpandingCollctionViewController.swift */; };
+		833FFA9E20D1EB4400F5CEAD /* ExpandingCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FFA9D20D1EB4400F5CEAD /* ExpandingCollectionViewController.swift */; };
+		833FFAAB20D860B900F5CEAD /* ExpandingCollectionViewControllerTestThreshold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FFAAA20D860B900F5CEAD /* ExpandingCollectionViewControllerTestThreshold.swift */; };
 		836780A320CA0AC3004CAFC2 /* FullHeightCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836780A220CA0AC3004CAFC2 /* FullHeightCollectionController.swift */; };
 		836780A920CA2F83004CAFC2 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836780A820CA2F83004CAFC2 /* Layout.swift */; };
 		8391D04C20C9B77C00E06797 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8391D04B20C9B77C00E06797 /* LaunchScreen.storyboard */; };
@@ -37,7 +38,8 @@
 		8326558720C9DEB1007925C4 /* SimpleCalculatedSizeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCalculatedSizeCell.swift; sourceTree = "<group>"; };
 		8326558920C9DF68007925C4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		832A65D4201FA40500A2BB0A /* CollectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionView.xib; sourceTree = "<group>"; };
-		833FFA9D20D1EB4400F5CEAD /* ExpandingCollctionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingCollctionViewController.swift; sourceTree = "<group>"; };
+		833FFA9D20D1EB4400F5CEAD /* ExpandingCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingCollectionViewController.swift; sourceTree = "<group>"; };
+		833FFAAA20D860B900F5CEAD /* ExpandingCollectionViewControllerTestThreshold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingCollectionViewControllerTestThreshold.swift; sourceTree = "<group>"; };
 		836780A220CA0AC3004CAFC2 /* FullHeightCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullHeightCollectionController.swift; sourceTree = "<group>"; };
 		836780A820CA2F83004CAFC2 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		8391D04B20C9B77C00E06797 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -64,7 +66,8 @@
 		833FFA9C20D1EB2900F5CEAD /* expanding */ = {
 			isa = PBXGroup;
 			children = (
-				833FFA9D20D1EB4400F5CEAD /* ExpandingCollctionViewController.swift */,
+				833FFA9D20D1EB4400F5CEAD /* ExpandingCollectionViewController.swift */,
+				833FFAAA20D860B900F5CEAD /* ExpandingCollectionViewControllerTestThreshold.swift */,
 			);
 			path = expanding;
 			sourceTree = "<group>";
@@ -223,12 +226,13 @@
 				836780A320CA0AC3004CAFC2 /* FullHeightCollectionController.swift in Sources */,
 				8326557C20C9C114007925C4 /* ConstraintHeightCell.swift in Sources */,
 				83A696721FE352B1003A529E /* AppDelegate.swift in Sources */,
+				833FFAAB20D860B900F5CEAD /* ExpandingCollectionViewControllerTestThreshold.swift in Sources */,
 				8326558A20C9DF68007925C4 /* Data.swift in Sources */,
 				8326558620C9DE72007925C4 /* CalculatedSizeCollectionController.swift in Sources */,
 				83A696851FE352CF003A529E /* EstimatedWidthCollectionController.swift in Sources */,
 				836780A920CA2F83004CAFC2 /* Layout.swift in Sources */,
 				83A696861FE352CF003A529E /* ConstraintHeightCollectionController.swift in Sources */,
-				833FFA9E20D1EB4400F5CEAD /* ExpandingCollctionViewController.swift in Sources */,
+				833FFA9E20D1EB4400F5CEAD /* ExpandingCollectionViewController.swift in Sources */,
 				8326557E20C9C172007925C4 /* Common.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -123,3 +123,55 @@ extension UIView {
     }
 }
 
+
+
+extension UICollectionView {
+
+    var contentBounds: CGRect {
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout
+            else { return bounds.inset(contentInset) }
+        return bounds
+            .inset(contentInset)
+            .inset(flowLayout.sectionInset)
+    }
+
+//    var adjustedContentSize: CGSize {
+//        let sectionInset = (collectionViewLayout as? UICollectionViewFlowLayout)
+//            .flatMap { $0.sectionInset } ?? UIEdgeInsets()
+//        return self.bounds.size
+//            .inset(self.contentInset)
+//            .inset(sectionInset)
+//    }
+
+    var contentWidth: CGFloat {
+        let flowInset = (collectionViewLayout as? UICollectionViewFlowLayout)
+            .flatMap { $0.sectionInset.left + $0.sectionInset.right } ?? 0
+        return self.bounds.size.width
+            - (contentInset.left + contentInset.right)
+            - flowInset
+    }
+
+    var contentHeight: CGFloat {
+        let flowInset = (collectionViewLayout as? UICollectionViewFlowLayout)
+            .flatMap { $0.sectionInset.top + $0.sectionInset.bottom } ?? 0
+        return self.bounds.size.height
+            - (contentInset.top + contentInset.bottom)
+            - flowInset
+    }
+
+
+
+    var contentWidthMaxInBounds: CGFloat { return self.bounds.size.width - horizontalInset }
+    var horizontalInset: CGFloat {
+        let flowInset = (collectionViewLayout as? UICollectionViewFlowLayout)
+            .flatMap { $0.sectionInset.left + $0.sectionInset.right } ?? 0
+        return (contentInset.left + contentInset.right) + flowInset
+    }
+
+    var contentHeightMaxInBounds: CGFloat { return self.bounds.size.height - verticalInset }
+    var verticalInset: CGFloat {
+        let flowInset = (collectionViewLayout as? UICollectionViewFlowLayout)
+            .flatMap { $0.sectionInset.top + $0.sectionInset.bottom } ?? 0
+        return (contentInset.top + contentInset.bottom) + flowInset
+    }
+}
