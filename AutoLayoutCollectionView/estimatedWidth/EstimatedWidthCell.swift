@@ -45,9 +45,9 @@ class EstimatedWidthCell: UICollectionViewCell {
 }
 
 class ParagraphContentView: UIView {}
-class ParagraphTestCell: EstimatedWidthCell {
+class ParagraphTestCellWithWidthContraint: EstimatedWidthCell {
 
-    static var prototype: ParagraphTestCell = ParagraphTestCell()
+    static var prototype: ParagraphTestCellWithWidthContraint = ParagraphTestCellWithWidthContraint()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -26,6 +26,7 @@
 		83A696791FE352B1003A529E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A696781FE352B1003A529E /* Assets.xcassets */; };
 		83A696851FE352CF003A529E /* EstimatedWidthCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A696831FE352CF003A529E /* EstimatedWidthCollectionController.swift */; };
 		83A696861FE352CF003A529E /* ConstraintHeightCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A696841FE352CF003A529E /* ConstraintHeightCollectionController.swift */; };
+		83D967D520DAD87600918A83 /* CompositeLayoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D967D420DAD87600918A83 /* CompositeLayoutCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		83A6967D1FE352B1003A529E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83A696831FE352CF003A529E /* EstimatedWidthCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EstimatedWidthCollectionController.swift; sourceTree = "<group>"; };
 		83A696841FE352CF003A529E /* ConstraintHeightCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintHeightCollectionController.swift; sourceTree = "<group>"; };
+		83D967D420DAD87600918A83 /* CompositeLayoutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeLayoutCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			children = (
 				8326558520C9DE72007925C4 /* CalculatedSizeCollectionController.swift */,
 				8326558720C9DEB1007925C4 /* SimpleCalculatedSizeCell.swift */,
+				83D967D420DAD87600918A83 /* CompositeLayoutCell.swift */,
 			);
 			path = calculated;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				83A696721FE352B1003A529E /* AppDelegate.swift in Sources */,
 				833FFAAB20D860B900F5CEAD /* ExpandingCollectionViewControllerTestThreshold.swift in Sources */,
 				8326558A20C9DF68007925C4 /* Data.swift in Sources */,
+				83D967D520DAD87600918A83 /* CompositeLayoutCell.swift in Sources */,
 				8326558620C9DE72007925C4 /* CalculatedSizeCollectionController.swift in Sources */,
 				83A696851FE352CF003A529E /* EstimatedWidthCollectionController.swift in Sources */,
 				836780A920CA2F83004CAFC2 /* Layout.swift in Sources */,

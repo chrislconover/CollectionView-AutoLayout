@@ -11,8 +11,9 @@ import UIKit
 
 class ConstraintWidthController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate {
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    override init() {
+        super.init()
+        title = "Constraint"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -21,7 +22,6 @@ class ConstraintWidthController: BaseController, UICollectionViewDataSource, UIC
 
     override func viewDidLoad() {
         view.backgroundColor = .lightGray
-        title = "Constraint"
 
         collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
         collectionView.backgroundColor = .cyan

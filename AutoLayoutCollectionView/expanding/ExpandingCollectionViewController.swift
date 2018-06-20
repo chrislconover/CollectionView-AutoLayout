@@ -9,11 +9,14 @@
 import UIKit
 
 
-class ExpandingCollectionViewController: CalculatedSizeCollectionViewController {
+class ExpandingCollectionViewController: CalculatedSizeCollectionViewController<SimpleCalculatedSizeCell> {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Expanding"
+    init() {
+        super.init("Expanding")
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func collectionView(_ collectionView: UICollectionView,

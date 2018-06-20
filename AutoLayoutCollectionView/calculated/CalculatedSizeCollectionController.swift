@@ -9,17 +9,26 @@
 import UIKit
 
 
-class CalculatedSizeCollectionViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+ where Cell:UICollectionViewCell, Cell:TextCell {
+
+    init(_ title: String) {
+        super.init()
+        self.title = title
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         view.backgroundColor = .yellow
-        title = "Calculated"
 
         collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
         collectionView.backgroundColor = .cyan
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(SimpleCalculatedSizeCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.register(Cell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.register(HeaderCell.self,
                                 forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                                 withReuseIdentifier: "Header")
@@ -62,9 +71,9 @@ class CalculatedSizeCollectionViewController: BaseController, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cell = SimpleCalculatedSizeCell.prototype
+        var cell = Cell.prototype
         let contents = data[indexPath.section][indexPath.item]
-        cell.label.text = contents
+        cell.text = contents
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
             .inset(layout.sectionInset)
@@ -79,10 +88,10 @@ class CalculatedSizeCollectionViewController: BaseController, UICollectionViewDa
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-            as! SimpleCalculatedSizeCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            as! Cell
         let contents = data[indexPath.section][indexPath.item]
-        cell.label.text = contents
+        cell.text = contents
         return cell
     }
 

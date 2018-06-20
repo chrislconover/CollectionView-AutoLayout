@@ -9,11 +9,14 @@
 import UIKit
 
 class App {
+    static let widthContstraint = EstimatedWidthConstraintCollectionViewController()
+    static let sizeForItem =
+        CalculatedSizeCollectionViewController<SimpleCalculatedSizeCell>("sizeForItem")
+    static let sizeForItemComposite =
+        CalculatedSizeCollectionViewController<CompositeLayoutCell>("compositeLayout")
     static let constraintHeightController = ExpandingCollectionViewController()
-    static let estimatedWidthController = EstimatedWidthCollectionViewController()
     static let expandingCellController = ExpandingCollectionViewController()
     static let expandingCellControllerThresholdTest = ExpandingCollectionViewControllerTestThreshold()
-    static let calcalatedSizeController = CalculatedSizeCollectionViewController()
 
     static func flipTo(controller: UIViewController) {
         let app = UIApplication.shared.delegate as! AppDelegate
@@ -29,6 +32,14 @@ class App {
 
 class BaseController: UIViewController {
 
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let safe = view.safeAreaInsets
@@ -85,6 +96,7 @@ class BaseController: UIViewController {
 
     func restore() {
         guard let restore = deleted.last else { return }
+        deleted = Array(deleted.dropLast())
         data[0] = [restore] + data[0]
         collectionView.performBatchUpdates(
             { [unowned self] in
@@ -132,6 +144,8 @@ class BaseController: UIViewController {
 }
 
 
+
+
 class ViewController: UITabBarController {
 
     override func viewDidLoad() {
@@ -139,16 +153,22 @@ class ViewController: UITabBarController {
 
 //        view.pin(RedView(), to: .left, .topMargin, .right, .bottom)
 
-        App.calcalatedSizeController.tabBarItem = UITabBarItem(title: "Calculated", image: nil, tag: 1)
-        App.estimatedWidthController.tabBarItem = UITabBarItem(title: "Estimated", image: nil, tag: 2)
-        App.expandingCellController.tabBarItem = UITabBarItem(title: "Expanding", image: nil, tag: 3)
-        App.expandingCellControllerThresholdTest.tabBarItem = UITabBarItem(title: "Threshold", image: nil, tag: 4)
-        App.constraintHeightController.tabBarItem = UITabBarItem(title: "Height", image: nil, tag: 5)
+        App.widthContstraint.tabBarItem =
+            UITabBarItem(title: App.widthContstraint.title, image: nil, tag: 2)
+        App.sizeForItem.tabBarItem = UITabBarItem(title: App.sizeForItem.title, image: nil, tag: 1)
+        App.sizeForItemComposite.tabBarItem = UITabBarItem(title: App.sizeForItemComposite.title, image: nil, tag: 1)
+        App.expandingCellController.tabBarItem =
+            UITabBarItem(title: App.expandingCellController.title, image: nil, tag: 3)
+        App.expandingCellControllerThresholdTest.tabBarItem =
+            UITabBarItem(title: App.expandingCellControllerThresholdTest.title, image: nil, tag: 4)
+        App.constraintHeightController.tabBarItem =
+            UITabBarItem(title: App.constraintHeightController.title, image: nil, tag: 5)
 
         self.viewControllers = [
-            App.estimatedWidthController,
-            App.calcalatedSizeController,
-            App.expandingCellController,
+            App.widthContstraint,
+            App.sizeForItem,
+            App.sizeForItemComposite,
+//            App.expandingCellController,
             App.expandingCellControllerThresholdTest,
             App.constraintHeightController
         ]

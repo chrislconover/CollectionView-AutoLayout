@@ -49,7 +49,7 @@ class ConstraintHeightController: UIViewController, UICollectionViewDataSource, 
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {        App.flipTo(controller: App.estimatedWidthController)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {        App.flipTo(controller: App.widthContstraint)
     }
 
     lazy var collectionView: UICollectionView = {

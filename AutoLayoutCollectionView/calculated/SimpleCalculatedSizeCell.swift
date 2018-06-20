@@ -8,8 +8,12 @@
 
 import UIKit
 
+protocol TextCell {
+    static var prototype: Self { get }
+    var text: String? { get set }
+}
 
-class SimpleCalculatedSizeCell: UICollectionViewCell {
+final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
 
     static var prototype: SimpleCalculatedSizeCell = SimpleCalculatedSizeCell()
 
@@ -20,6 +24,11 @@ class SimpleCalculatedSizeCell: UICollectionViewCell {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    var text: String? {
+        get { return label.text }
+        set { label.text = newValue }
     }
 
     private func configure() {
@@ -37,16 +46,11 @@ class SimpleCalculatedSizeCell: UICollectionViewCell {
         withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
         verticalFittingPriority: UILayoutPriority) -> CGSize {
 
-//    let defaultSize = super.systemLayoutSizeFitting(
-//        targetSize,
-//        withHorizontalFittingPriority: horizontalFittingPriority,
-//        verticalFittingPriority: verticalFittingPriority)
-
         let contentSize = contentView.systemLayoutSizeFitting(
             targetSize,
             withHorizontalFittingPriority: horizontalFittingPriority,
             verticalFittingPriority: verticalFittingPriority)
-//        print("\(#function): defaultSize: \(defaultSize), contentSize: \(contentSize)")
+
         return contentSize
     }
 
@@ -57,3 +61,4 @@ class SimpleCalculatedSizeCell: UICollectionViewCell {
         return label
     }()
 }
+

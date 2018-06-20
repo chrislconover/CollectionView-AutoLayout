@@ -1,13 +1,26 @@
 import UIKit
 
+//This uses a width contstraint in the cell, configured in systemSizeFitting..., that
+//usese the targetSize.width that picks up the value from the layout's estimated size
+//
+//This seems simple enough and seems to work, but animations do not work correctly.
 
-class EstimatedWidthCollectionViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+class EstimatedWidthConstraintCollectionViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    override init() {
+        super.init()
+        title = "Constraint"
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .yellow
-        title = "Estimated"
 
         collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
         collectionView.backgroundColor = .cyan
@@ -16,7 +29,7 @@ class EstimatedWidthCollectionViewController: BaseController, UICollectionViewDa
         collectionView.delegate = self
 
         body.pin(collectionView)
-        collectionView.register(ParagraphTestCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.register(ParagraphTestCellWithWidthContraint.self, forCellWithReuseIdentifier: "Cell")
         collectionView.register(
             HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
             withReuseIdentifier: "Header")
@@ -56,7 +69,7 @@ class EstimatedWidthCollectionViewController: BaseController, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print(#function)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-            as! ParagraphTestCell
+            as! ParagraphTestCellWithWidthContraint
         let contents = data[indexPath.section][indexPath.item]
         cell.label.text = contents
         return cell
