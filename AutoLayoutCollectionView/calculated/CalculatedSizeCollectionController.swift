@@ -74,6 +74,8 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         var cell = Cell.prototype
         let contents = data[indexPath.section][indexPath.item]
         cell.text = contents
+        cell.expand = selected.contains(indexPath)
+
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
             .inset(layout.sectionInset)
@@ -83,7 +85,7 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
             .withWidth(width)
-//        print("\(#function): \(finalSize)")
+        print("sizeForItemAt: \(finalSize)")
         return finalSize
     }
 
@@ -92,12 +94,26 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
             as! Cell
         let contents = data[indexPath.section][indexPath.item]
         cell.text = contents
+        cell.onDrag = { [unowned self] in
+            self.delete(indexPath)
+        }
         return cell
     }
 
+    var selected = Set<IndexPath>()
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected \(indexPath)")
-        delete(indexPath)
+
+        var cell = collectionView.cellForItem(at: indexPath) as! Cell
+        cell.expand = !cell.expand
+        if cell.expand { selected.insert(indexPath) }
+        else { selected.remove(indexPath) }
+
+        UIView.animate(withDuration: 0.25, animations: {
+            collectionView.collectionViewLayout.invalidateLayout()
+            collectionView.layoutIfNeeded()
+        })
     }
 
     // MARK: rotation

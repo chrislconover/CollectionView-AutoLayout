@@ -35,7 +35,7 @@ class ExpandingCollectionViewController: CalculatedSizeCollectionViewController<
             verticalFittingPriority: .fittingSizeLevel)
             .withWidth(width)
 
-        if let selected = selected, selected == indexPath {
+        if selected.contains(indexPath) {
             print("\(#function): \(finalSize)")
             return finalSize.withHeight(250)
         }
@@ -45,18 +45,15 @@ class ExpandingCollectionViewController: CalculatedSizeCollectionViewController<
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selected = selected == indexPath ? nil : indexPath
-//        collectionView.collectionViewLayout.invalidateLayout()
-//        collectionView.performBatchUpdates({}, completion: { _ in })
 
-//        collectionView.reloadItems(at: [indexPath])
+        if selected.contains(indexPath) { selected.remove(indexPath) }
+        else { selected.insert(indexPath) }
+
         UIView.animate(withDuration: 0.25, animations: {
             collectionView.collectionViewLayout.invalidateLayout()
             collectionView.layoutIfNeeded()
         })
     }
-
-    var selected: IndexPath! = nil
 }
 
 

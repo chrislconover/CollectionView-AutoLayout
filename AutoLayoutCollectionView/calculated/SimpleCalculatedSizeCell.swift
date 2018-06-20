@@ -11,11 +11,19 @@ import UIKit
 protocol TextCell {
     static var prototype: Self { get }
     var text: String? { get set }
-}
+    var onDrag: (()->())? { get set }
+    var expand: Bool { get set }
+ }
 
 final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
 
     static var prototype: SimpleCalculatedSizeCell = SimpleCalculatedSizeCell()
+    var text: String? {
+        get { return label.text }
+        set { label.text = newValue }
+    }
+    var onDrag: (()->())?
+    var expand: Bool = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,11 +34,6 @@ final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var text: String? {
-        get { return label.text }
-        set { label.text = newValue }
-    }
-
     private func configure() {
         contentView.backgroundColor = .white
         contentView.pin(label, inset: 10)
@@ -39,7 +42,6 @@ final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
         return super.systemLayoutSizeFitting(targetSize)
     }
-
 
     override func systemLayoutSizeFitting(
         _ targetSize: CGSize,
