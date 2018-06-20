@@ -46,7 +46,9 @@ class ExpandingCollectionViewControllerTestThreshold: UIViewController {
     }()
 
     var selected: IndexPath! = nil
-    let data = ["Apple", "Banana", "Orange", "Grapefruit"]
+    let data = [
+        ("Colors", ["Red", "Blue", "Green"]),
+        ("Fruit", ["Apple", "Banana", "Orange", "Grapefruit"])]
     var collectionView: UICollectionView!
 }
 
@@ -59,7 +61,7 @@ extension ExpandingCollectionViewControllerTestThreshold: UICollectionViewDelega
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cell = SimpleCalculatedSizeCell.prototype
-        let contents = data[indexPath.item]
+        let contents = data[indexPath.section].1[indexPath.item]
         cell.label.text = contents
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
@@ -84,7 +86,7 @@ extension ExpandingCollectionViewControllerTestThreshold: UICollectionViewDelega
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cell = SimpleCalculatedSizeCell.prototype
-        let contents = data[indexPath.item]
+        let contents = data[indexPath.section].1[indexPath.item]
         cell.label.text = contents
         let width = collectionView.contentBounds.size.width
         let fittedSize = cell.systemLayoutSizeFitting(
@@ -113,25 +115,25 @@ extension ExpandingCollectionViewControllerTestThreshold: UICollectionViewDelega
 
 extension ExpandingCollectionViewControllerTestThreshold: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return data.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = data.count
+        let count = data[section].1.count
         return count
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as! HeaderCell
-        header.label.text = "Section \(indexPath.section + 1)"
+        header.label.text = data[indexPath.section].0
         return header
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             as! SimpleCalculatedSizeCell
-        let contents = data[indexPath.item]
+        let contents = data[indexPath.section].1[indexPath.item]
         cell.label.text = "\(indexPath.item + 73 >= 75 ? "Smooth" : "Fades") (\(indexPath.item + 73)) \(contents)"
         return cell
     }

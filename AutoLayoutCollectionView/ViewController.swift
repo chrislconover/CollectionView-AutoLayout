@@ -73,7 +73,7 @@ class BaseController: UIViewController {
     let body = UIView()
 
     @objc func onInsert(sender: UIButton) {
-
+        restore()
     }
 
     @objc func onDelete(sender: UIButton) {
@@ -83,19 +83,27 @@ class BaseController: UIViewController {
         delete(IndexPath(item: item, section: section))
     }
 
+    func restore() {
+        guard let restore = deleted.last else { return }
+        data[0] = [restore] + data[0]
+        collectionView.performBatchUpdates(
+            { [unowned self] in
+                self.collectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
+            },
+            completion: { completed in print("Done") })
+    }
+
     func delete(_ path: IndexPath) {
         print("removing item at \(path)")
         let sectionCount = data[path.section].count
+
+        deleted.append(data[path.section][path.item])
 
         let leading = data[0..<path.section]
         let stripFrom = data[path.section]
         let stripped = stripFrom[0..<path.item] + stripFrom[path.item + 1 ..< stripFrom.count]
         let trailing = data[path.section + 1 ..< data.count]
         let after = (Array(leading) + [Array(stripped)] + Array(trailing)).filter { $0.count > 0 }
-
-//        let after =
-//            [first.enumerated().compactMap { $0 != item ? $1 : nil }]
-//                + Array(data.dropFirst())
         data = after
 
         collectionView.performBatchUpdates({ [unowned self] in
@@ -111,7 +119,7 @@ class BaseController: UIViewController {
     }
 
 
-
+    var deleted: [String] = []
     var collectionView: UICollectionView!
     lazy var data:[[String]] = source
     lazy var source:[[String]] = (0..<3).map{ _ in
