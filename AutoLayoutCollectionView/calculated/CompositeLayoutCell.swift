@@ -8,6 +8,9 @@
 
 import UIKit
 
+func + (left: CGPoint, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left.x + right.x, y: left.y + right.y)
+}
 
 final class CompositeLayoutCell: UICollectionViewCell, TextCell {
 
@@ -34,15 +37,7 @@ final class CompositeLayoutCell: UICollectionViewCell, TextCell {
     private func configure() {
         contentView.backgroundColor = .white
         contentView.pin(contents)
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPanGesture))
         self.addGestureRecognizer(pan)
-    }
-
-    @objc func onPanGesture(pan: UIPanGestureRecognizer) {
-
-        if case .ended = pan.state {
-            onDrag?()
-        }
     }
 
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
@@ -72,6 +67,18 @@ final class CompositeLayoutCell: UICollectionViewCell, TextCell {
             verticalFittingPriority: verticalFittingPriority)
 
         return contentSize
+    }
+
+    lazy var pan: UIPanGestureRecognizer = {
+        let gesture =  UIPanGestureRecognizer(target: self, action: #selector(onPanGesture))
+        return gesture }()
+    var panStart: CGPoint = .init()
+
+
+    @objc func onPanGesture(pan: UIPanGestureRecognizer) {
+        if case .ended = pan.state {
+            onDrag?()
+        }
     }
 
     var contents: CompositeLayoutCellContents = CompositeLayoutCellContents()

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate
  where Cell:UICollectionViewCell, Cell:TextCell {
 
     init(_ title: String) {
@@ -94,6 +94,7 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
             as! Cell
         let contents = data[indexPath.section][indexPath.item]
         cell.text = contents
+        cell.pan.delegate = self
         cell.onDrag = { [unowned self] in
             self.delete(indexPath)
         }
@@ -131,4 +132,10 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         layout.scrollDirection = .vertical
         return layout
     }()
+
+    @objc public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        let vertical = self.collectionView.panGestureRecognizer
+        return otherGestureRecognizer == self.collectionView.panGestureRecognizer
+    }
 }

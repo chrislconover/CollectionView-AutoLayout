@@ -13,6 +13,7 @@ protocol TextCell {
     var text: String? { get set }
     var onDrag: (()->())? { get set }
     var expand: Bool { get set }
+    var pan: UIPanGestureRecognizer { get }
  }
 
 final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
@@ -62,5 +63,17 @@ final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
         label.numberOfLines = 0
         return label
     }()
+
+    lazy var pan: UIPanGestureRecognizer = {
+        let gesture =  UIPanGestureRecognizer(target: self, action: #selector(onPanGesture))
+        return gesture }()
+    var panStart: CGPoint = .init()
+
+
+    @objc func onPanGesture(pan: UIPanGestureRecognizer) {
+        if case .ended = pan.state {
+            onDrag?()
+        }
+    }
 }
 
