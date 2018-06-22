@@ -2,6 +2,10 @@
 
 Approaches and problems
 
+### TL;DR:
+
+The third tab demonstrates a working example of non trivial auto layout based cells that expand when clicked, delete cells when swiped, and also demonstrate re-insertion.  This is a testbed in progress, hacked up for various tests, but working in the third tab.
+
 ### Configure estimatedSize to width of contents, after insets
  - layout can work, but also prone autolayout warnings from collection view contraints
  - update animations look broken, compress to top and back again
