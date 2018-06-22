@@ -128,13 +128,13 @@ class CompositeLayoutCellContents: UIView {
     }()
 
     var panelHeight: NSLayoutConstraint!
-    var bodyHeight: NSLayoutConstraint!
+    lazy var height:CGFloat = 60
 
     lazy var body: UIView = {
         let view = Body()
         view.backgroundColor = .blue
         view.pin(contents, inset: 9)
-        bodyHeight = view.heightAnchor.constraint(equalToConstant: height)
+        let bodyHeight = view.heightAnchor.constraint(equalToConstant: height)
         bodyHeight.isActive = true
         return view
     }()
@@ -146,8 +146,6 @@ class CompositeLayoutCellContents: UIView {
         label.text = "Body with height constraint of \(height)"
         return label
     }()
-
-    lazy var height:CGFloat = 60
 }
 
 
