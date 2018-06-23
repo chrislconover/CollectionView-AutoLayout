@@ -22,3 +22,8 @@ The third tab demonstrates a working example of non trivial auto layout based ce
 ### Animations
 - only `UIView.animate` seems to work, enclosing `layout.invalidateLayout` and `collectionView.layoutIfNeeded`
 - in my testing, `performBatchUpdates` does not work reliably
+
+
+![alt text][sizeForItemAtImage]
+
+[sizeForItemAtImage]: https://github.com/chrisco314/CollectionView-AutoLayout/WorkingAutoLayoutCollectionView.gif "Sample using sizeForItemAt"
