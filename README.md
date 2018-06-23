@@ -26,4 +26,4 @@ The third tab demonstrates a working example of non trivial auto layout based ce
 
 ![alt text][sizeForItemAtImage]
 
-[sizeForItemAtImage]: https://github.com/chrisco314/CollectionView-AutoLayout/WorkingAutoLayoutCollectionView.gif "Sample using sizeForItemAt"
+[sizeForItemAtImage]: https://github.com/chrisco314/CollectionView-AutoLayout/blob/master/WorkingAutoLayoutCollectionView.gif "Sample using sizeForItemAt"

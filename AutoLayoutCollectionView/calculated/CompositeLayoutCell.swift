@@ -146,9 +146,53 @@ class CompositeLayoutCellContents: UIView {
         label.text = "Body with height constraint of \(height)"
         return label
     }()
+
+    lazy var nestedCollection: UICollectionView = {
+        let collectionView = UICollectionView()
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
+    }()
+
+    lazy var layout: UICollectionViewFlowLayout = {
+        let layout = UICollectionViewFlowLayout()
+        return layout
+    }()
+
+    var data: [[String]] = [[
+        "Apple",
+        "Orange",
+        "Banana",
+        "Grapefruit"
+    ]]
 }
 
 
 
+extension CompositeLayoutCellContents: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return data.count
+    }
 
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:    IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
+            "Cell", for: indexPath) as! SimpleCalculatedSizeCell
+        cell.label.text = data[indexPath.section][indexPath.item]
+        return cell
+    }
+}
+
+extension CompositeLayoutCellContents: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var cell = SimpleCalculatedSizeCell.prototype
+        let contents = data[indexPath.section][indexPath.item]
+        cell.text = contents
+
+        let width = collectionView.bounds
+            .inset(collectionView.contentInset)
+            .inset(layout.sectionInset)
+            .width
+        return size
+    }
+}
 
