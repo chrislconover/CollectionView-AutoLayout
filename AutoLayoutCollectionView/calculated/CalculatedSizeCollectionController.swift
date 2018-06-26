@@ -75,15 +75,25 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         let contents = data[indexPath.section][indexPath.item]
         cell.title = "\(indexPath)"
         cell.text = contents
-        if selected.contains(indexPath) {
-            print("Calculating size for expanded cell")
-        }
-        cell.expand = selected.contains(indexPath)
+//        if selected.contains(indexPath) {
+//            print("Calculating size for expanded cell")
+//        }
 
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
             .inset(layout.sectionInset)
             .width
+        
+        let before = cell.systemLayoutSizeFitting(
+            .init(width: width, height: 0),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+            .withWidth(width)
+
+        cell.bounds = .init(origin: .init(), size: .init(width: width, height: 0))
+        cell.expand = selected.contains(indexPath)
+
+
         let firstPass = cell.systemLayoutSizeFitting(
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
@@ -92,7 +102,9 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
 
         let newBounds = CGRect(origin: .zero, size: firstPass)
         cell.bounds = newBounds
-        cell.setNeedsLayout()
+        let contentViewBounds = cell.contentView.bounds
+
+        cell.contentView.bounds = newBounds
         cell.layoutIfNeeded()
         let finalSize = cell.systemLayoutSizeFitting(
             .init(width: width, height: 0),
@@ -100,8 +112,8 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
             verticalFittingPriority: .fittingSizeLevel)
             .withWidth(width)
 
-        print("sizeForItemAt: \(finalSize)")
-        return finalSize
+        print("sizeForItemAt: \(before) -> \(firstPass) -> \(finalSize)")
+        return firstPass
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
