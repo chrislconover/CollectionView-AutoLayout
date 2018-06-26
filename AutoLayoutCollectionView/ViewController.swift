@@ -134,7 +134,7 @@ class BaseController: UIViewController {
     var deleted: [String] = []
     var collectionView: UICollectionView!
     lazy var data:[[String]] = source
-    lazy var source:[[String]] = (0..<1).map{ _ in
+    lazy var source:[[String]] = (0..<3).map{ _ in
         (0..<2).map({ _ in
             let from = (Data.ipsumSentences.count - 3).rand()
             let str: String = Data.ipsumSentences[from ..< from + 3].joined(separator: ". ")
