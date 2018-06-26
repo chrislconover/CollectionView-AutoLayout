@@ -234,21 +234,6 @@ class CompositeLayoutCellContents: UIView {
 }
 
 
-class NestedCollection: UICollectionView {
-    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
-        let contentSize = collectionViewLayout.collectionViewContentSize
-
-        if targetSize.width == 0 {
-            print("wtf")
-        }
-
-        let size = targetSize.withHeight(contentSize.height)
-        print("NestedCollection.systemLayoutSizeFitting... \(size)")
-        return size
-    }
-}
-
-
 extension CompositeLayoutCellContents: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let itemCount = data.count
@@ -291,13 +276,7 @@ extension CompositeLayoutCellContents: UICollectionViewDelegateFlowLayout {
 
 class NestedCollectionView: UICollectionView {
 
-    override var bounds: CGRect { didSet {
-        print("NestedCollectionView.bounds -> \(bounds)")
-        }}
-
     override func layoutSubviews() {
-
-        super.layoutSubviews()
 
         let expectedWidth = adjustedContentSize.width
         if bounds.size.width > 0,
@@ -314,10 +293,8 @@ class NestedCollectionView: UICollectionView {
         if needToUpdateSize {
             invalidateIntrinsicContentSize()
         }
-    }
 
-    override func updateConstraints() {
-        super.updateConstraints()
+        super.layoutSubviews()
     }
 
     override var intrinsicContentSize: CGSize {

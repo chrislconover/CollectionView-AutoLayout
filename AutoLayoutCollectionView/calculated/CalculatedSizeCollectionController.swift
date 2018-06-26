@@ -47,11 +47,6 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         super.viewDidLayoutSubviews()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        print("\(#function): \(view.bounds), screen is: \(UIScreen.main.bounds)")
-        super.viewDidAppear(animated)
-    }
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return data.count
     }
