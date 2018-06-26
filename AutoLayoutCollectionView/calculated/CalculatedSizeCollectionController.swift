@@ -114,26 +114,7 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         print("Selected \(indexPath)")
 
         var cell = collectionView.cellForItem(at: indexPath) as! Cell
-
-        let width = collectionView.bounds
-            .inset(collectionView.contentInset)
-            .inset(layout.sectionInset)
-            .width
-
-        let before = cell.systemLayoutSizeFitting(
-            .init(width: width, height: 0),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel)
-//            .withWidth(width)
         cell.expand = !cell.expand
-//        cell.layoutIfNeeded()
-
-        let after = cell.systemLayoutSizeFitting(
-            .init(width: width, height: 0),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel)
-//            .withWidth(width)
-
         if cell.expand { selected.insert(indexPath) }
         else { selected.remove(indexPath) }
 
