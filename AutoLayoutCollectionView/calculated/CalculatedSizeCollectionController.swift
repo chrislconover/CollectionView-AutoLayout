@@ -66,43 +66,34 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var cell = Cell.prototype
+        var cell = prototype
         let contents = data[indexPath.section][indexPath.item]
         cell.title = "\(indexPath)"
         cell.text = contents
+        cell.expand = selected.contains(indexPath)
 
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
             .inset(layout.sectionInset)
             .width
-        
-        let before = cell.systemLayoutSizeFitting(
-            .init(width: width, height: 0),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel)
-
-        cell.bounds = .init(origin: .init(), size: .init(width: width, height: 0))
-        cell.expand = selected.contains(indexPath)
-
-
         let firstPass = cell.systemLayoutSizeFitting(
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
 
-        let newBounds = CGRect(origin: .zero, size: firstPass)
-        cell.bounds = newBounds
-
-        cell.contentView.bounds = newBounds
-        cell.layoutIfNeeded()
-        let finalSize = cell.systemLayoutSizeFitting(
-            .init(width: width, height: 0),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel)
-
-        print("sizeForItemAt: \(before) -> \(firstPass) -> \(finalSize)")
+        print("sizeForItemAt -> \(firstPass)")
         return firstPass
     }
+
+    lazy var prototype: Cell = {
+        let cell = Cell.prototype
+        let newBounds = CGRect(origin: .zero, size: .init(width: 500, height: 500))
+        cell.bounds = newBounds
+        cell.contentView.bounds = newBounds
+        cell.layoutIfNeeded()
+        return cell
+    }()
+
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
