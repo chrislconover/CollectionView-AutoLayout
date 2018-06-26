@@ -48,13 +48,6 @@ final class CompositeLayoutCell: UICollectionViewCell, TextCell {
         self.addGestureRecognizer(pan)
     }
 
-    override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
-        if targetSize.width == 0 {
-            print("wtf")
-        }
-        return super.systemLayoutSizeFitting(targetSize)
-    }
-
     var expand: Bool {
         get { return contents.expand }
         set { contents.expand = newValue }
@@ -108,11 +101,6 @@ class CompositeLayoutCellContents: UIView {
         }
     }
 
-    override func updateConstraints() {
-        super.updateConstraints()
-//        expandedConstraint.isActive = expand
-    }
-
     init() {
         super.init(frame: .zero)
         configureLayout()
@@ -122,25 +110,14 @@ class CompositeLayoutCellContents: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override var intrinsicContentSize: CGSize {
-        let size = super.intrinsicContentSize
-        print("CompositeLayoutCellContents.intrinsicContentSize: \(size)")
-        return size
-    }
-
     override func systemLayoutSizeFitting(
         _ targetSize: CGSize,
         withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
         verticalFittingPriority: UILayoutPriority) -> CGSize {
-        if targetSize.width == 0 {
-            print("wtf")
-        }
-        let size = super.systemLayoutSizeFitting(
+        return super.systemLayoutSizeFitting(
             targetSize,
             withHorizontalFittingPriority: horizontalFittingPriority,
             verticalFittingPriority: verticalFittingPriority)
-        print("CompositeLayoutCellContents.systemLayoutSizeFitting(\(title.text!)): \(size)")
-        return size
     }
 
 
@@ -189,14 +166,11 @@ class CompositeLayoutCellContents: UIView {
         return panel
     }()
 
-//    var panelHeight: NSLayoutConstraint!
     var expandedConstraint: NSLayoutConstraint!
-//    var expandedHeight: NSLayoutConstraint!
     lazy var height:CGFloat = 60
 
     lazy var body: UIView = {
         let view = Body()
-//        view.backgroundColor = .blue
         view.layer.borderColor = UIColor.blue.cgColor
         view.layer.borderWidth = 2
         view.pin(nestedCollection, inset: 9)
@@ -248,25 +222,21 @@ extension CompositeLayoutCellContents: UICollectionViewDataSource {
 }
 
 extension CompositeLayoutCellContents: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         let contents = data[indexPath.section][indexPath.item]
         prototype.text = contents
-
-        if bounds.width == 0 {
-            print("wtf")
-        }
 
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
             .inset(layout.sectionInset)
             .width
-        let size = prototype.systemLayoutSizeFitting(
+        return prototype.systemLayoutSizeFitting(
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
-        print("Nested cell (): sizeForItemAt: \(size)")
-        return size
     }
 }
 
@@ -300,7 +270,6 @@ class NestedCollectionView: UICollectionView {
         let totalHeight = layoutSize.height + verticalInset
         let finalSize = CGSize(width: defaultSize.width,
                       height: layoutSize.height > 0 ? totalHeight : defaultSize.height)
-        print("NestedCollectionView.intrinsicContentSize: \(finalSize)")
         return finalSize
     }
 
@@ -313,9 +282,6 @@ class NestedCollectionView: UICollectionView {
             withHorizontalFittingPriority: horizontalFittingPriority,
             verticalFittingPriority: verticalFittingPriority)
         let adjustedToContent = defaultSize.withHeight(contentHeight)
-        if adjustedToContent.height != defaultSize.height {
-            print("check this")
-        }
         return adjustedToContent
     }
 }

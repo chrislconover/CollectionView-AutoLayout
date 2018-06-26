@@ -35,21 +35,6 @@ class EstimatedWidthConstraintCollectionViewController: BaseController, UICollec
             withReuseIdentifier: "Header")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        print("\(#function): \(view.bounds)")
-        super.viewWillAppear(animated)
-    }
-
-    override func viewDidLayoutSubviews() {
-        print("\(#function): \(view.bounds)")
-        super.viewDidLayoutSubviews()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        print("\(#function): \(view.bounds), screen is: \(UIScreen.main.bounds)")
-        super.viewDidAppear(animated)
-    }
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return data.count
     }
@@ -67,7 +52,6 @@ class EstimatedWidthConstraintCollectionViewController: BaseController, UICollec
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print(#function)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             as! ParagraphTestCellWithWidthContraint
         let contents = data[indexPath.section][indexPath.item]
