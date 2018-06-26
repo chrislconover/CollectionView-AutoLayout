@@ -57,18 +57,11 @@ final class CompositeLayoutCell: UICollectionViewCell, TextCell {
         _ targetSize: CGSize,
         withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
         verticalFittingPriority: UILayoutPriority) -> CGSize {
-
-        if targetSize.width == 0 {
-            print("wtf")
-        }
-
-        let contentSize = contentView.systemLayoutSizeFitting(
+        return contentView.systemLayoutSizeFitting(
             targetSize,
             withHorizontalFittingPriority: horizontalFittingPriority,
             verticalFittingPriority: verticalFittingPriority)
-
-        print("CompositeLayoutCell.systemLayoutSizeFitting(\(contents.title.text!) \(contentSize)")
-        return contentSize
+            .withWidth(targetSize.width)
     }
 
     lazy var pan: UIPanGestureRecognizer = {
@@ -109,17 +102,6 @@ class CompositeLayoutCellContents: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func systemLayoutSizeFitting(
-        _ targetSize: CGSize,
-        withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
-        verticalFittingPriority: UILayoutPriority) -> CGSize {
-        return super.systemLayoutSizeFitting(
-            targetSize,
-            withHorizontalFittingPriority: horizontalFittingPriority,
-            verticalFittingPriority: verticalFittingPriority)
-    }
-
 
     func configureLayout() {
         pin(header, to: .left, .top, .right,  inset: 10)

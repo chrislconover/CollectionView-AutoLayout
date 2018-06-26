@@ -70,9 +70,6 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         let contents = data[indexPath.section][indexPath.item]
         cell.title = "\(indexPath)"
         cell.text = contents
-//        if selected.contains(indexPath) {
-//            print("Calculating size for expanded cell")
-//        }
 
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
@@ -83,7 +80,6 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
-            .withWidth(width)
 
         cell.bounds = .init(origin: .init(), size: .init(width: width, height: 0))
         cell.expand = selected.contains(indexPath)
@@ -93,11 +89,9 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
-            .withWidth(width)
 
         let newBounds = CGRect(origin: .zero, size: firstPass)
         cell.bounds = newBounds
-        let contentViewBounds = cell.contentView.bounds
 
         cell.contentView.bounds = newBounds
         cell.layoutIfNeeded()
@@ -105,7 +99,6 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
-            .withWidth(width)
 
         print("sizeForItemAt: \(before) -> \(firstPass) -> \(finalSize)")
         return firstPass
