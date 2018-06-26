@@ -15,10 +15,18 @@ func + (left: CGPoint, right: CGPoint) -> CGPoint {
 final class CompositeLayoutCell: UICollectionViewCell, TextCell {
 
     static var prototype: CompositeLayoutCell = CompositeLayoutCell()
-    var text: String? {
+    var title: String? {
         get { return contents.title.text }
-        set { contents.title.text = newValue }
+        set {
+            contents.title.text = newValue
+        }
     }
+
+    var text: String? {
+        get { return contents.subTitle.text }
+        set { contents.subTitle.text = newValue }
+    }
+
     var onDrag: (()->())?
 
     override init(frame: CGRect) {
@@ -41,19 +49,15 @@ final class CompositeLayoutCell: UICollectionViewCell, TextCell {
     }
 
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
+        if targetSize.width == 0 {
+            print("wtf")
+        }
         return super.systemLayoutSizeFitting(targetSize)
     }
 
     var expand: Bool {
-        get { return contents.panelHeight.isActive }
-        set {
-            guard newValue != expand else { return }
-            contents.panelHeight.isActive = newValue
-            invalidateIntrinsicContentSize()
-            setNeedsLayout()
-            contents.setNeedsLayout()
-            contents.invalidateIntrinsicContentSize()
-        }
+        get { return contents.expand }
+        set { contents.expand = newValue }
     }
 
     override func systemLayoutSizeFitting(
@@ -61,11 +65,16 @@ final class CompositeLayoutCell: UICollectionViewCell, TextCell {
         withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
         verticalFittingPriority: UILayoutPriority) -> CGSize {
 
+        if targetSize.width == 0 {
+            print("wtf")
+        }
+
         let contentSize = contentView.systemLayoutSizeFitting(
             targetSize,
             withHorizontalFittingPriority: horizontalFittingPriority,
             verticalFittingPriority: verticalFittingPriority)
 
+        print("CompositeLayoutCell.systemLayoutSizeFitting(\(contents.title.text!) \(contentSize)")
         return contentSize
     }
 
@@ -90,6 +99,20 @@ class Panel: UIView {}
 
 class CompositeLayoutCellContents: UIView {
 
+    var expand: Bool {
+        get { return expandedConstraint.isActive }
+        set {
+            guard newValue != expand else { return }
+            expandedConstraint.isActive = newValue
+            setNeedsUpdateConstraints()
+        }
+    }
+
+    override func updateConstraints() {
+        super.updateConstraints()
+//        expandedConstraint.isActive = expand
+    }
+
     init() {
         super.init(frame: .zero)
         configureLayout()
@@ -99,15 +122,40 @@ class CompositeLayoutCellContents: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        print("CompositeLayoutCellContents.intrinsicContentSize: \(size)")
+        return size
+    }
+
+    override func systemLayoutSizeFitting(
+        _ targetSize: CGSize,
+        withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
+        verticalFittingPriority: UILayoutPriority) -> CGSize {
+        if targetSize.width == 0 {
+            print("wtf")
+        }
+        let size = super.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: horizontalFittingPriority,
+            verticalFittingPriority: verticalFittingPriority)
+        print("CompositeLayoutCellContents.systemLayoutSizeFitting(\(title.text!)): \(size)")
+        return size
+    }
+
+
     func configureLayout() {
         pin(header, to: .left, .top, .right,  inset: 10)
         pin(panel, to: .right, .bottom, .left,  inset: 10)
-        body.topAnchor.constraint(equalTo: header.bottomAnchor).isActive = true
+        panel.topAnchor.constraint(equalTo: header.bottomAnchor).isActive = true
     }
 
     lazy var header: UIView = {
         let view = Header()
-        view.pin(title, inset: 10)
+        view.pin(title, to: .left, .top, .right, inset: 10)
+        view.pin(subTitle, to: .right, .bottom, .left, inset: 10)
+        subTitle.topAnchor.constraintEqualToSystemSpacingBelow(title.bottomAnchor, multiplier: 1)
+            .isActive = true
         view.backgroundColor = .red
         return view
     }()
@@ -119,23 +167,39 @@ class CompositeLayoutCellContents: UIView {
         return label
     }()
 
-    lazy var panel: UIView = {
-        let view = Panel()
-        view.pin(body, to: .left, .top, .right)
-        view.clipsToBounds = true
-        panelHeight = view.heightAnchor.constraint(equalTo: body.heightAnchor)
-        return view
+    let subTitle: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .green
+        label.numberOfLines = 0
+        return label
     }()
 
-    var panelHeight: NSLayoutConstraint!
+    lazy var panel: UIView = {
+        let panel = Panel()
+        panel.backgroundColor = .magenta
+        panel.clipsToBounds = true
+
+        panel.pin(body, to: .left, .top, .right)
+        let collapsed = panel.heightAnchor.constraint(equalToConstant: 0)
+        collapsed.priority = .defaultLow
+        collapsed.isActive = true
+        expandedConstraint = panel.bottomAnchor.constraint(equalTo: body.bottomAnchor)
+        expandedConstraint.priority = .required
+        expandedConstraint.isActive = false
+        return panel
+    }()
+
+//    var panelHeight: NSLayoutConstraint!
+    var expandedConstraint: NSLayoutConstraint!
+//    var expandedHeight: NSLayoutConstraint!
     lazy var height:CGFloat = 60
 
     lazy var body: UIView = {
         let view = Body()
-        view.backgroundColor = .blue
-        view.pin(contents, inset: 9)
-        let bodyHeight = view.heightAnchor.constraint(equalToConstant: height)
-        bodyHeight.isActive = true
+//        view.backgroundColor = .blue
+        view.layer.borderColor = UIColor.blue.cgColor
+        view.layer.borderWidth = 2
+        view.pin(nestedCollection, inset: 9)
         return view
     }()
 
@@ -148,9 +212,10 @@ class CompositeLayoutCellContents: UIView {
     }()
 
     lazy var nestedCollection: UICollectionView = {
-        let collectionView = UICollectionView()
+        let collectionView = NestedCollectionView(frame: .init(), collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.register(SimpleCalculatedSizeCell.self, forCellWithReuseIdentifier: "Cell")
         return collectionView
     }()
 
@@ -165,12 +230,29 @@ class CompositeLayoutCellContents: UIView {
         "Banana",
         "Grapefruit"
     ]]
+    let prototype: SimpleCalculatedSizeCell = SimpleCalculatedSizeCell()
 }
 
+
+class NestedCollection: UICollectionView {
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let contentSize = collectionViewLayout.collectionViewContentSize
+
+        if targetSize.width == 0 {
+            print("wtf")
+        }
+
+        let size = targetSize.withHeight(contentSize.height)
+        print("NestedCollection.systemLayoutSizeFitting... \(size)")
+        return size
+    }
+}
 
 
 extension CompositeLayoutCellContents: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let itemCount = data.count
+        print("CompositeLayoutCellContents.numberOfItemsInSection: \(itemCount)")
         return data.count
     }
 
@@ -184,15 +266,82 @@ extension CompositeLayoutCellContents: UICollectionViewDataSource {
 
 extension CompositeLayoutCellContents: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var cell = SimpleCalculatedSizeCell.prototype
+
         let contents = data[indexPath.section][indexPath.item]
-        cell.text = contents
+        prototype.text = contents
+
+        if bounds.width == 0 {
+            print("wtf")
+        }
 
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
             .inset(layout.sectionInset)
             .width
+        let size = prototype.systemLayoutSizeFitting(
+            .init(width: width, height: 0),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+            .withWidth(width)
+        print("Nested cell (): sizeForItemAt: \(size)")
         return size
     }
 }
 
+
+class NestedCollectionView: UICollectionView {
+
+    override var bounds: CGRect { didSet {
+        print("NestedCollectionView.bounds -> \(bounds)")
+        }}
+
+    override func layoutSubviews() {
+
+        super.layoutSubviews()
+
+        let expectedWidth = adjustedContentSize.width
+        if bounds.size.width > 0,
+            let layout = collectionViewLayout as? UICollectionViewFlowLayout,
+            layout.estimatedItemSize.width != expectedWidth {
+            layout.estimatedItemSize = layout.estimatedItemSize.withWidth(expectedWidth)
+        }
+
+        let layoutSize = collectionViewLayout.collectionViewContentSize
+        let totalHeight = layoutSize.height // layout.height + verticalInset
+        let needToUpdateSize = layoutSize.height > 0
+            ? bounds.size.height != totalHeight
+            : bounds.size.height != 0
+        if needToUpdateSize {
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    override func updateConstraints() {
+        super.updateConstraints()
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let defaultSize = super.intrinsicContentSize
+        let layoutSize = collectionViewLayout.collectionViewContentSize
+        let totalHeight = layoutSize.height + verticalInset
+        let finalSize = CGSize(width: defaultSize.width,
+                      height: layoutSize.height > 0 ? totalHeight : defaultSize.height)
+        print("NestedCollectionView.intrinsicContentSize: \(finalSize)")
+        return finalSize
+    }
+
+    override func systemLayoutSizeFitting(
+        _ targetSize: CGSize, withHorizontalFittingPriority
+        horizontalFittingPriority: UILayoutPriority,
+        verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let defaultSize = super.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: horizontalFittingPriority,
+            verticalFittingPriority: verticalFittingPriority)
+        let adjustedToContent = defaultSize.withHeight(contentHeight)
+        if adjustedToContent.height != defaultSize.height {
+            print("check this")
+        }
+        return adjustedToContent
+    }
+}

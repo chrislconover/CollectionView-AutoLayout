@@ -135,13 +135,13 @@ extension UICollectionView {
             .inset(flowLayout.sectionInset)
     }
 
-//    var adjustedContentSize: CGSize {
-//        let sectionInset = (collectionViewLayout as? UICollectionViewFlowLayout)
-//            .flatMap { $0.sectionInset } ?? UIEdgeInsets()
-//        return self.bounds.size
-//            .inset(self.contentInset)
-//            .inset(sectionInset)
-//    }
+    var adjustedContentSize: CGSize {
+        let sectionInset = (collectionViewLayout as? UICollectionViewFlowLayout)
+            .flatMap { $0.sectionInset } ?? UIEdgeInsets()
+        return self.bounds.size
+            .inset(contentInset)
+            .inset(sectionInset)
+    }
 
     var contentWidth: CGFloat {
         let flowInset = (collectionViewLayout as? UICollectionViewFlowLayout)

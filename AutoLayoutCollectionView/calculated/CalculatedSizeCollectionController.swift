@@ -73,18 +73,33 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         var cell = Cell.prototype
         let contents = data[indexPath.section][indexPath.item]
+        cell.title = "\(indexPath)"
         cell.text = contents
+        if selected.contains(indexPath) {
+            print("Calculating size for expanded cell")
+        }
         cell.expand = selected.contains(indexPath)
 
         let width = collectionView.bounds
             .inset(collectionView.contentInset)
             .inset(layout.sectionInset)
             .width
+        let firstPass = cell.systemLayoutSizeFitting(
+            .init(width: width, height: 0),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+            .withWidth(width)
+
+        let newBounds = CGRect(origin: .zero, size: firstPass)
+        cell.bounds = newBounds
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         let finalSize = cell.systemLayoutSizeFitting(
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
             .withWidth(width)
+
         print("sizeForItemAt: \(finalSize)")
         return finalSize
     }
@@ -93,6 +108,7 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             as! Cell
         let contents = data[indexPath.section][indexPath.item]
+        cell.title = "\(indexPath)"
         cell.text = contents
         cell.pan.delegate = self
         cell.onDrag = { [unowned self] in
@@ -107,7 +123,26 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         print("Selected \(indexPath)")
 
         var cell = collectionView.cellForItem(at: indexPath) as! Cell
+
+        let width = collectionView.bounds
+            .inset(collectionView.contentInset)
+            .inset(layout.sectionInset)
+            .width
+
+        let before = cell.systemLayoutSizeFitting(
+            .init(width: width, height: 0),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+//            .withWidth(width)
         cell.expand = !cell.expand
+//        cell.layoutIfNeeded()
+
+        let after = cell.systemLayoutSizeFitting(
+            .init(width: width, height: 0),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+//            .withWidth(width)
+
         if cell.expand { selected.insert(indexPath) }
         else { selected.remove(indexPath) }
 

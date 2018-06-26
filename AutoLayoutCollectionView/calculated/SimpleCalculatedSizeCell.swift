@@ -10,6 +10,7 @@ import UIKit
 
 protocol TextCell {
     static var prototype: Self { get }
+    var title: String? { get set }
     var text: String? { get set }
     var onDrag: (()->())? { get set }
     var expand: Bool { get set }
@@ -19,6 +20,10 @@ protocol TextCell {
 final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
 
     static var prototype: SimpleCalculatedSizeCell = SimpleCalculatedSizeCell()
+    var title: String? {
+        get { return nil }
+        set {} }
+
     var text: String? {
         get { return label.text }
         set { label.text = newValue }
