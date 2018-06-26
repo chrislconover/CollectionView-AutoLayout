@@ -236,9 +236,7 @@ class CompositeLayoutCellContents: UIView {
 
 extension CompositeLayoutCellContents: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let itemCount = data.count
-        print("CompositeLayoutCellContents.numberOfItemsInSection: \(itemCount)")
-        return data.count
+        return data[section].count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:    IndexPath) -> UICollectionViewCell {
