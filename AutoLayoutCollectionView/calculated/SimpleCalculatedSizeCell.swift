@@ -59,7 +59,7 @@ final class SimpleCalculatedSizeCell: UICollectionViewCell, TextCell {
             withHorizontalFittingPriority: horizontalFittingPriority,
             verticalFittingPriority: verticalFittingPriority)
 
-        return contentSize
+        return contentSize.withWidth(targetSize.width)
     }
 
     let label:UILabel = {

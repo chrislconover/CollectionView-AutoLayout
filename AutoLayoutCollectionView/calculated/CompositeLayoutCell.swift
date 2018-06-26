@@ -267,7 +267,6 @@ extension CompositeLayoutCellContents: UICollectionViewDelegateFlowLayout {
             .init(width: width, height: 0),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
-            .withWidth(width)
         print("Nested cell (): sizeForItemAt: \(size)")
         return size
     }
