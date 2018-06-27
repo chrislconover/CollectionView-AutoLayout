@@ -24,7 +24,7 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
     override func viewDidLoad() {
         view.backgroundColor = .yellow
 
-        collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
+        collectionView = FullWidthCollectionView(frame: CGRect(), collectionViewLayout: layout)
         collectionView.backgroundColor = .cyan
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -63,27 +63,27 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
         return header
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var cell = prototype
-        let contents = data[indexPath.section][indexPath.item]
-        cell.title = "\(indexPath)"
-        cell.text = contents
-        cell.expand = selected.contains(indexPath)
-
-        let width = collectionView.bounds
-            .inset(collectionView.contentInset)
-            .inset(layout.sectionInset)
-            .width
-        let firstPass = cell.systemLayoutSizeFitting(
-            .init(width: width, height: 0),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel)
-
-        print("sizeForItemAt -> \(firstPass)")
-        return firstPass
-    }
+//    func collectionView(_ collectionView: UICollectionView,
+//                        layout collectionViewLayout: UICollectionViewLayout,
+//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        var cell = prototype
+//        let contents = data[indexPath.section][indexPath.item]
+//        cell.title = "\(indexPath)"
+//        cell.text = contents
+//        cell.expand = selected.contains(indexPath)
+//
+//        let width = collectionView.bounds
+//            .inset(collectionView.contentInset)
+//            .inset(layout.sectionInset)
+//            .width
+//        let firstPass = cell.systemLayoutSizeFitting(
+//            .init(width: width, height: 0),
+//            withHorizontalFittingPriority: .required,
+//            verticalFittingPriority: .fittingSizeLevel)
+//
+//        print("sizeForItemAt -> \(firstPass)")
+//        return firstPass
+//    }
 
     lazy var prototype: Cell = {
         let cell = Cell.prototype
@@ -135,6 +135,7 @@ class CalculatedSizeCollectionViewController<Cell>: BaseController, UICollection
     lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         let width = view.bounds.size.width
+        layout.estimatedItemSize = .init(width: width, height: 100)
         layout.headerReferenceSize = .init(width: view.bounds.size.width, height: 30)
         layout.scrollDirection = .vertical
         return layout

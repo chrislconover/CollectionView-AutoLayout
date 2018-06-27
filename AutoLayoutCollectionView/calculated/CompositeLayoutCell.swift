@@ -53,15 +53,37 @@ final class CompositeLayoutCell: UICollectionViewCell, TextCell {
         set { contents.expand = newValue }
     }
 
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+//        let contentSize = collectionView!.adjustedContentSize
+//        layoutAttributes.size = contentSize
+        let width = layoutAttributes.size.width
+        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        let preferredSize = systemLayoutSizeFitting(
+            layoutAttributes.size.withWidth(width),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+        print("preferredLayoutAttributesFitting: \(preferredSize)")
+        attributes.size = preferredSize
+        return attributes
+    }
+
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        let size =  layoutAttributes.size
+        print("apply: \(size)")
+        super.apply(layoutAttributes)
+    }
+
     override func systemLayoutSizeFitting(
         _ targetSize: CGSize,
         withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
         verticalFittingPriority: UILayoutPriority) -> CGSize {
-        return contentView.systemLayoutSizeFitting(
+        let size = contentView.systemLayoutSizeFitting(
             targetSize,
             withHorizontalFittingPriority: horizontalFittingPriority,
             verticalFittingPriority: verticalFittingPriority)
             .withWidth(targetSize.width)
+        print("CompositeLayoutCell.systemLayoutFittingSize: \(size)")
+        return size
     }
 
     lazy var pan: UIPanGestureRecognizer = {

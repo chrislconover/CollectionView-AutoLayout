@@ -19,7 +19,7 @@ class ExpandingCollectionViewController: CalculatedSizeCollectionViewController<
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func collectionView(_ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                                  layout collectionViewLayout: UICollectionViewLayout,
                                  sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cell = SimpleCalculatedSizeCell.prototype
